@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Debug TypeScript in Node.js",
-            "program": "${workspaceFolder}/src/index.ts",
+            "program": "${workspaceFolder}/index.js",
             "preLaunchTask": "typescript",
             "cwd": "${workspaceFolder}",
             "protocol": "inspector",
