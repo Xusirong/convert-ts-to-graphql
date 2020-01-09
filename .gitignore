@@ -1,0 +1,6 @@
+# # IDE
+# .vscode
+
+# path
+dist
+node_modules
