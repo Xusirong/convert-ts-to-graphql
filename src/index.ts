@@ -20,7 +20,7 @@ export default function(filePath: string) {
 
     let graphqlDSL: string = ""
     Object.keys(FCList).forEach(name => {
-        const result = buildDSLFeomTypeFC(FCList[name])
+        const result = buildDSLFromTypeFC(name, FCList[name], FCList)
         if(result) { graphqlDSL += result }
     })
 
@@ -29,6 +29,7 @@ export default function(filePath: string) {
 
 export type FCItem = {
     name: string
+    members: Record<string, string>
     function: Function
 }
 function createFCFromStatement(statement: ts.Statement): FCItem | undefined {
@@ -41,6 +42,7 @@ function createFCFromStatement(statement: ts.Statement): FCItem | undefined {
     return undefined
 }
 
-function buildDSLFeomTypeFC(fcItem: Function): string {
+function buildDSLFromTypeFC(name: string, fcItem: Function, fcList: Record<string, Function>): string {
+    console.log(fcItem())
     return "is ok?"
 }

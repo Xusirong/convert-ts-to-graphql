@@ -21,7 +21,7 @@ function default_1(filePath) {
     });
     let graphqlDSL = "";
     Object.keys(FCList).forEach(name => {
-        const result = buildDSLFeomTypeFC(FCList[name]);
+        const result = buildDSLFromTypeFC(name, FCList[name], FCList);
         if (result) {
             graphqlDSL += result;
         }
@@ -38,7 +38,8 @@ function createFCFromStatement(statement) {
     }
     return undefined;
 }
-function buildDSLFeomTypeFC(fcItem) {
+function buildDSLFromTypeFC(name, fcItem, fcList) {
+    console.log(fcItem());
     return "is ok?";
 }
 //# sourceMappingURL=index.js.map
