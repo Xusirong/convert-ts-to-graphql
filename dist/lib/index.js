@@ -16,7 +16,7 @@ function default_1(filePath) {
     statements.forEach(statement => {
         const fcItem = createFCFromStatement(statement);
         if (fcItem) {
-            FCList[fcItem.name] = fcItem.function;
+            FCList[fcItem.name] = fcItem.function.bind(FCList);
         }
     });
     let graphqlDSL = "";

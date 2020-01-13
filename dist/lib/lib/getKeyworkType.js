@@ -38,12 +38,12 @@ function default_1(keywordType) {
     }
 }
 exports.default = default_1;
-function handleTypeReference(typeName) {
-    if (typescript_1.default.isIdentifier(typeName)) {
-        return getName_1.handleIdentifier(typeName);
+function handleTypeReference(keywordType) {
+    if (typescript_1.default.isIdentifier(keywordType.typeName)) {
+        return getName_1.handleIdentifier(keywordType.typeName);
     }
-    if (typescript_1.default.isQualifiedName(typeName)) {
-        return getName_1.handleIdentifier(typeName.right);
+    if (typescript_1.default.isQualifiedName(keywordType.typeName)) {
+        return getName_1.handleIdentifier(keywordType.typeName.right);
     }
     return "any";
 }

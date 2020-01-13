@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 function default_1(statement) {
     return {
         name: "",
-        members: {},
         function: () => { }
     };
 }

@@ -34,12 +34,12 @@ export default function(keywordType: ts.TypeNode): string {
     }
 }
 
-function handleTypeReference(typeName: ts.TypeReferenceNode): string {
-    if(ts.isIdentifier(typeName)) {
-        return handleIdentifier(typeName)
+function handleTypeReference(keywordType: ts.TypeReferenceNode): string {
+    if(ts.isIdentifier(keywordType.typeName)) {
+        return handleIdentifier(keywordType.typeName)
     }
-    if(ts.isQualifiedName(typeName)) {
-        return handleIdentifier(typeName.right)
+    if(ts.isQualifiedName(keywordType.typeName)) {
+        return handleIdentifier(keywordType.typeName.right)
     }
     return "any"
 }

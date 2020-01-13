@@ -14,7 +14,7 @@ export default function(filePath: string) {
     statements.forEach(statement => {
         const fcItem = createFCFromStatement(statement)
         if(fcItem) {
-            FCList[fcItem.name] = fcItem.function
+            FCList[fcItem.name] = fcItem.function.bind(FCList)
         }
     })
 
@@ -29,7 +29,6 @@ export default function(filePath: string) {
 
 export type FCItem = {
     name: string
-    members: Record<string, string>
     function: Function
 }
 function createFCFromStatement(statement: ts.Statement): FCItem | undefined {

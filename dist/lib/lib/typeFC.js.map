@@ -1,1 +1,1 @@
-{"version":3,"file":"typeFC.js","sourceRoot":"","sources":["../../../src/lib/typeFC.ts"],"names":[],"mappings":";;AAGA,mBAAwB,SAAkC;IACtD,OAAO;QACH,IAAI,EAAE,EAAE;QACR,OAAO,EAAE,EAAE;QACX,QAAQ,EAAE,GAAG,EAAE,GAAE,CAAC;KACrB,CAAA;AACL,CAAC;AAND,4BAMC"}
+{"version":3,"file":"typeFC.js","sourceRoot":"","sources":["../../../src/lib/typeFC.ts"],"names":[],"mappings":";;AAGA,mBAAwB,SAAkC;IACtD,OAAO;QACH,IAAI,EAAE,EAAE;QACR,QAAQ,EAAE,GAAG,EAAE,GAAE,CAAC;KACrB,CAAA;AACL,CAAC;AALD,4BAKC"}
