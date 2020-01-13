@@ -1,10 +1,9 @@
-interface A<T extends string > extends B<T> {
+interface A extends B {
     name: string
 }
 
-interface B<T> {
+interface B extends C {
     age: number
-    t: T
 }
 
 interface C {

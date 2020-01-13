@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Convert ts .d.ts file to graphql schema",
   "main": "dist/lib/index.js",
+  "files": ["dist"],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",

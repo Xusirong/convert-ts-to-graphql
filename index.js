@@ -1,5 +1,11 @@
 const convert = require('./dist/lib/index').default
 
-const filePath = __dirname + '/test.d.ts'
+const extendsPath = __dirname + '/test/extends.d.ts'
 
-console.log(convert(filePath))
+const genericsPath = __dirname + '/test/generics.d.ts'
+
+console.log(convert(extendsPath))
+
+console.log("-----------------------------")
+
+console.log(convert(genericsPath))
