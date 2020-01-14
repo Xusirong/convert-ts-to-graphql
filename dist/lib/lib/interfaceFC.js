@@ -3,11 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const typescript_1 = __importDefault(require("typescript"));
 const getName_1 = require("./getName");
 const handlePropertySignature_1 = __importDefault(require("./handlePropertySignature"));
 const getKeyworkType_1 = __importDefault(require("./getKeyworkType"));
 function default_1(statement) {
     let name = getName_1.handleIdentifier(statement.name);
+    // 范型处理
     let typeArgsName = [];
     let typeArgsValue = [];
     if (statement.typeParameters) {
@@ -24,6 +26,7 @@ function default_1(statement) {
             }
         });
     }
+    // extends 处理
     let extendings = [];
     if (statement.heritageClauses) {
         statement.heritageClauses.forEach(heritage => {
@@ -41,10 +44,27 @@ function default_1(statement) {
             });
         });
     }
+    // 属性处理
     let members = {};
-    statement.members.forEach(member => {
+    let membersAgrs = {};
+    statement.members.forEach(item => {
+        let member = item;
         let [memberName, memberType] = handlePropertySignature_1.default(member);
         members[memberName] = memberType;
+        // 参数处理
+        if (member.type && typescript_1.default.isTypeReferenceNode(member.type)) {
+            if (member.type.typeArguments) {
+                let agrs = member.type.typeArguments.map(i => {
+                    if (typescript_1.default.isTypeReferenceNode(i)) {
+                        return "any";
+                    }
+                    else {
+                        return getKeyworkType_1.default(i);
+                    }
+                });
+                membersAgrs[memberName] = agrs;
+            }
+        }
     });
     return {
         name,
@@ -73,8 +93,18 @@ function default_1(statement) {
             // members处理
             for (let key in members) {
                 if (typeArgsName.includes(members[key])) {
+                    // 属性值为范型
                     let index = typeArgsName.indexOf(members[key]);
                     result[key] = args[index];
+                }
+                else if (this[members[key]]) {
+                    // 属性值为类型
+                    if (membersAgrs[key]) {
+                        result[key] = this[members[key]](...membersAgrs[key]);
+                    }
+                    else {
+                        result[key] = this[members[key]]();
+                    }
                 }
                 else {
                     result[key] = members[key];

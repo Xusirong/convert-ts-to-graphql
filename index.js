@@ -4,8 +4,18 @@ const extendsPath = __dirname + '/test/extends.d.ts'
 
 const genericsPath = __dirname + '/test/generics.d.ts'
 
-console.log(convert(extendsPath))
+const valueIsInterface = __dirname + '/test/valueIsInterface.d.ts'
+
+// console.log("-----------------------------")
+
+// console.log(convert(extendsPath))
+
+// console.log("-----------------------------")
+
+// console.log(convert(genericsPath))
 
 console.log("-----------------------------")
 
-console.log(convert(genericsPath))
+console.log(convert(valueIsInterface))
+
+console.log("-----------------------------")

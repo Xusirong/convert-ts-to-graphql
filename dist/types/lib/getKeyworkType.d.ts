@@ -1,2 +1,5 @@
 import ts from 'typescript';
-export default function (keywordType: ts.TypeNode): string;
+import { TypeReferenceReturn } from './handleTypeReference';
+declare function getKeyworkType(keywordType: ts.TypeNode): string;
+declare function getKeyworkType(keywordType: ts.TypeNode, justString: boolean): TypeReferenceReturn;
+export default getKeyworkType;

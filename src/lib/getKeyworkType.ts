@@ -1,8 +1,14 @@
 import ts from 'typescript'
-import { handleIdentifier } from './getName'
+import handleTypeReference from './handleTypeReference'
+import { isString } from 'util'
+import { TypeReferenceReturn } from './handleTypeReference'
 
-export default function(keywordType: ts.TypeNode): string {
-    switch(keywordType.kind) {
+function getKeyworkType(keywordType: ts.TypeNode): string
+
+function getKeyworkType(keywordType: ts.TypeNode, justString: boolean): TypeReferenceReturn
+
+function getKeyworkType(keywordType: ts.TypeNode, justString?: boolean) {
+    switch (keywordType.kind) {
         case ts.SyntaxKind.AnyKeyword:
             return "any"
         case ts.SyntaxKind.UnknownKeyword:
@@ -28,18 +34,17 @@ export default function(keywordType: ts.TypeNode): string {
         case ts.SyntaxKind.NeverKeyword:
             return "never"
         case ts.SyntaxKind.TypeReference:
-            return handleTypeReference(keywordType as ts.TypeReferenceNode)
+            let typeReference = handleTypeReference(keywordType as ts.TypeReferenceNode)
+            if (isString(typeReference)) {
+                return typeReference
+            } else {
+                return typeReference[0]
+            }
+        // 暂时只做typeName处理，不处理参数
+        // return typeReference
         default:
             return "any"
     }
 }
 
-function handleTypeReference(keywordType: ts.TypeReferenceNode): string {
-    if(ts.isIdentifier(keywordType.typeName)) {
-        return handleIdentifier(keywordType.typeName)
-    }
-    if(ts.isQualifiedName(keywordType.typeName)) {
-        return handleIdentifier(keywordType.typeName.right)
-    }
-    return "any"
-}
+export default getKeyworkType;

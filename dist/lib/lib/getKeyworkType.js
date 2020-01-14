@@ -4,8 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importDefault(require("typescript"));
-const getName_1 = require("./getName");
-function default_1(keywordType) {
+const handleTypeReference_1 = __importDefault(require("./handleTypeReference"));
+const util_1 = require("util");
+function getKeyworkType(keywordType, justString) {
     switch (keywordType.kind) {
         case typescript_1.default.SyntaxKind.AnyKeyword:
             return "any";
@@ -32,19 +33,18 @@ function default_1(keywordType) {
         case typescript_1.default.SyntaxKind.NeverKeyword:
             return "never";
         case typescript_1.default.SyntaxKind.TypeReference:
-            return handleTypeReference(keywordType);
+            let typeReference = handleTypeReference_1.default(keywordType);
+            if (util_1.isString(typeReference)) {
+                return typeReference;
+            }
+            else {
+                return typeReference[0];
+            }
+        // 暂时只做typeName处理，不处理参数
+        // return typeReference
         default:
             return "any";
     }
 }
-exports.default = default_1;
-function handleTypeReference(keywordType) {
-    if (typescript_1.default.isIdentifier(keywordType.typeName)) {
-        return getName_1.handleIdentifier(keywordType.typeName);
-    }
-    if (typescript_1.default.isQualifiedName(keywordType.typeName)) {
-        return getName_1.handleIdentifier(keywordType.typeName.right);
-    }
-    return "any";
-}
+exports.default = getKeyworkType;
 //# sourceMappingURL=getKeyworkType.js.map
