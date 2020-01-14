@@ -39,7 +39,7 @@ function createFCFromStatement(statement) {
     return undefined;
 }
 function buildDSLFromTypeFC(name, fcItem, fcList) {
-    console.log(fcItem());
+    console.log(JSON.stringify(fcItem()));
     return "is ok?";
 }
 //# sourceMappingURL=index.js.map

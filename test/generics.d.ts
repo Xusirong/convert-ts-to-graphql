@@ -1,15 +1,15 @@
-interface A<T extends string> {
-    a: T
+interface D<T extends string> {
+    d: T
 }
 
-interface B<T extends string | number = number> {
-    b: T
+interface E<T extends string | number = number> {
+    e: T
 }
 
-interface C<T extends string> extends D<T> {
-    c: number
+interface F<T extends string> extends G<T> {
+    f: number
 } 
 
-interface D<T> {
-    d: T
+interface G<T> {
+    g: T
 }

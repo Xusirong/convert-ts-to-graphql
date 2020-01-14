@@ -42,6 +42,6 @@ function createFCFromStatement(statement: ts.Statement): FCItem | undefined {
 }
 
 function buildDSLFromTypeFC(name: string, fcItem: Function, fcList: Record<string, Function>): string {
-    console.log(fcItem())
+    console.log(JSON.stringify(fcItem()))
     return "is ok?"
 }
