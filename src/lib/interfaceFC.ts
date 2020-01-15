@@ -44,24 +44,25 @@ export default function (statement: ts.InterfaceDeclaration): FCItem {
     // 属性处理
     let members: Record<string, string> = {}
     let membersAgrs: Record<string, string[]> = {}
-    statement.members.forEach(item => {
-        let member = item as ts.PropertySignature
-        let [memberName, memberType] = handlePropertySignature(member)
-        members[memberName] = memberType
+    statement.members.forEach(member => {
+        if (ts.isPropertySignature(member)) {
+            let [memberName, memberType] = handlePropertySignature(member)
+            members[memberName] = memberType
 
-        // 参数处理
-        if(member.type && ts.isTypeReferenceNode(member.type)) {
-            if(member.type.typeArguments) {
-                let agrs = member.type.typeArguments.map(i => {
-                    if(ts.isTypeReferenceNode(i)) {
-                        return "any"
-                    } else {
-                        return getKeyworkType(i)
-                    }
-                })
-                membersAgrs[memberName] = agrs
+            // 参数处理
+            if (member.type && ts.isTypeReferenceNode(member.type)) {
+                if (member.type.typeArguments) {
+                    let agrs = member.type.typeArguments.map(i => {
+                        if (ts.isTypeReferenceNode(i)) {
+                            return "any"
+                        } else {
+                            return getKeyworkType(i)
+                        }
+                    })
+                    membersAgrs[memberName] = agrs
+                }
             }
-        }  
+        }
     })
 
     return {
@@ -98,7 +99,7 @@ export default function (statement: ts.InterfaceDeclaration): FCItem {
                     result[key] = args[index]
                 } else if ((this as any)[members[key]]) {
                     // 属性值为类型
-                    if(membersAgrs[key]) {
+                    if (membersAgrs[key]) {
                         result[key] = (this as any)[members[key]](...membersAgrs[key])
                     } else {
                         result[key] = (this as any)[members[key]]()

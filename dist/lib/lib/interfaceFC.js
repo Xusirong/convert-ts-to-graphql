@@ -47,22 +47,23 @@ function default_1(statement) {
     // 属性处理
     let members = {};
     let membersAgrs = {};
-    statement.members.forEach(item => {
-        let member = item;
-        let [memberName, memberType] = handlePropertySignature_1.default(member);
-        members[memberName] = memberType;
-        // 参数处理
-        if (member.type && typescript_1.default.isTypeReferenceNode(member.type)) {
-            if (member.type.typeArguments) {
-                let agrs = member.type.typeArguments.map(i => {
-                    if (typescript_1.default.isTypeReferenceNode(i)) {
-                        return "any";
-                    }
-                    else {
-                        return getKeyworkType_1.default(i);
-                    }
-                });
-                membersAgrs[memberName] = agrs;
+    statement.members.forEach(member => {
+        if (typescript_1.default.isPropertySignature(member)) {
+            let [memberName, memberType] = handlePropertySignature_1.default(member);
+            members[memberName] = memberType;
+            // 参数处理
+            if (member.type && typescript_1.default.isTypeReferenceNode(member.type)) {
+                if (member.type.typeArguments) {
+                    let agrs = member.type.typeArguments.map(i => {
+                        if (typescript_1.default.isTypeReferenceNode(i)) {
+                            return "any";
+                        }
+                        else {
+                            return getKeyworkType_1.default(i);
+                        }
+                    });
+                    membersAgrs[memberName] = agrs;
+                }
             }
         }
     });
