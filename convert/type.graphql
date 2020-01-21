@@ -1,0 +1,17 @@
+type K {
+  "name": "String"
+} 
+
+type L {
+  "t": "Json"
+} 
+
+type M {
+  "k": {
+    "name": "String"
+  },
+  "l": {
+    "t": "String"
+  }
+} 
+

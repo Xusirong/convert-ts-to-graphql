@@ -1,0 +1,15 @@
+type A {
+  "phone": "Float",
+  "age": "Float",
+  "name": "String"
+} 
+
+type B {
+  "phone": "Float",
+  "age": "Float"
+} 
+
+type C {
+  "phone": "Float"
+} 
+

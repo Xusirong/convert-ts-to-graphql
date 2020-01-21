@@ -1,5 +1,5 @@
 import ts from 'typescript'
-import { FCItem } from '../index'
+import { FCItem } from '../convert'
 import { handleIdentifier } from './getName'
 import handlePropertySignature from './handlePropertySignature'
 import getKeyworkType from './getKeyworkType'

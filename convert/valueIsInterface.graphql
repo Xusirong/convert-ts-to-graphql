@@ -1,0 +1,19 @@
+type H {
+  "i": {
+    "name": "String",
+    "age": "Float"
+  },
+  "j": {
+    "i": "Json"
+  }
+} 
+
+type I {
+  "name": "Json",
+  "age": "Json"
+} 
+
+type J {
+  "i": "Json"
+} 
+

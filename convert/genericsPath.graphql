@@ -1,0 +1,17 @@
+type D {
+  "d": "String"
+} 
+
+type E {
+  "e": "Float"
+} 
+
+type F {
+  "g": "String",
+  "f": "Float"
+} 
+
+type G {
+  "g": "Json"
+} 
+

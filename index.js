@@ -1,27 +1,41 @@
 const convert = require('./dist/lib/index').default
 
-const extendsPath = __dirname + '/test/extends.d.ts'
+const extendsPath = '/test/extends.d.ts'
 
-const genericsPath = __dirname + '/test/generics.d.ts'
+const genericsPath = '/test/generics.d.ts'
 
-const valueIsInterface = __dirname + '/test/valueIsInterface.d.ts'
+const valueIsInterface = '/test/valueIsInterface.d.ts'
 
-const type = __dirname + '/test/type.d.ts'
+const type = '/test/type.d.ts'
 
-// console.log("-----------------------------")
+convert({
+    baseUrl: __dirname,
+    inputFile: extendsPath,
+    outDir: 'convert',
+    outFile: 'extendsPath.graphql',
+    anyType: 'Json'
+})
 
-// console.log(convert(extendsPath))
+convert({
+    baseUrl: __dirname,
+    inputFile: genericsPath,
+    outDir: 'convert',
+    outFile: 'genericsPath.graphql',
+    anyType: 'Json'
+})
 
-// console.log("-----------------------------")
+convert({
+    baseUrl: __dirname,
+    inputFile: valueIsInterface,
+    outDir: 'convert',
+    outFile: 'valueIsInterface.graphql',
+    anyType: 'Json'
+})
 
-// console.log(convert(genericsPath))
-
-// console.log("-----------------------------")
-
-// console.log(convert(valueIsInterface))
-
-console.log("-----------------------------")
-
-console.log(convert(type))
-
-console.log("-----------------------------")
+convert({
+    baseUrl: __dirname,
+    inputFile: type,
+    outDir: 'convert',
+    outFile: 'type.graphql',
+    anyType: 'Json'
+})
