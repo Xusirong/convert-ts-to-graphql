@@ -59,7 +59,7 @@ function replacer(value, anyType) {
     }
 }
 function buildDSLFromTypeFC(name, fcItem, anyType) {
-    let body = JSON.stringify(fcItem(), (key, value) => replacer(value, anyType), 2);
+    let body = JSON.stringify(fcItem(), (key, value) => replacer(value, anyType), 2).replace(/"/g, "");
     return `type ${name} ${body} \n\n`;
 }
 //# sourceMappingURL=convert.js.map

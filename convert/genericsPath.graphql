@@ -1,17 +1,17 @@
 type D {
-  "d": "String"
+  d: String
 } 
 
 type E {
-  "e": "Float"
+  e: Float
 } 
 
 type F {
-  "g": "String",
-  "f": "Float"
+  g: String,
+  f: Float
 } 
 
 type G {
-  "g": "Json"
+  g: Json
 } 
 

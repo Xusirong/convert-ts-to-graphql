@@ -1,19 +1,19 @@
 type H {
-  "i": {
-    "name": "String",
-    "age": "Float"
+  i: {
+    name: String,
+    age: Float
   },
-  "j": {
-    "i": "Json"
+  j: {
+    i: Json
   }
 } 
 
 type I {
-  "name": "Json",
-  "age": "Json"
+  name: Json,
+  age: Json
 } 
 
 type J {
-  "i": "Json"
+  i: Json
 } 
 

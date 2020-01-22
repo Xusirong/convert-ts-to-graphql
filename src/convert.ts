@@ -69,7 +69,7 @@ function buildDSLFromTypeFC(
     let body = JSON.stringify(
         fcItem(),
         (key: string, value: string) => replacer(value, anyType),
-        2)
+        2).replace(/"/g, "")
 
     return `type ${name} ${body} \n\n`
 }
