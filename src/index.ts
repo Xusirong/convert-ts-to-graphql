@@ -1,70 +1,77 @@
 import fs from 'fs'
+import path from 'path'
 import convert from './convert'
-
-interface TransferOptions {
-    // 基础路径
-    baseUrl?: string
-    // 输入的文件路径
-    inputFile: string
-    // 输出的文件目录
-    outDir?: string
-    // 输出的文件名
-    outFile: string
-    // any类型处理
-    anyType?: string
-}
 
 const defaultOptions = {
     baseUrl: __dirname,
     anyType: "Any"
 }
 
-/**
- * 
- * @param filePath .d.ts文件所在位置
- * @param options 配置transfer的行为
- */
-export default function (options: TransferOptions) {
+interface ConvertFileOptions {
+    // 基础路径
+    baseUrl?: string
+    // 输入的文件路径
+    inputFile: string
+    // any类型处理
+    anyType?: string
+}
+
+function convertFile(options: ConvertFileOptions) {
     if (!options.inputFile) {
         console.error('参数必须传入inputFile')
         return false
     }
-    if (!options.outFile) {
-        console.error('参数必须传入outFile')
-        return false
-    }
-
-    let inputFile = normPath(options.inputFile)
-
-    let outFile = normPath(options.outFile)
 
     let baseUrl = options.baseUrl || defaultOptions.baseUrl
 
     let anyType = options.anyType || defaultOptions.anyType
 
-    let outDir = ''
+    let filePath = path.join(baseUrl, options.inputFile)
 
-    if (options.outDir) {
-        outDir = normPath(options.outDir)
-        createDir(baseUrl + outDir)
+    if(!fs.existsSync(filePath)) {
+        throw new Error(`${filePath}文件不存在`)
     }
 
-    let inputPath = baseUrl + inputFile
-
-    let outputPath = baseUrl + outDir + outFile
-
-    writeFile(outputPath, convert(inputPath, anyType))
+    return convert(filePath, anyType)
 }
 
-function normPath(path: string): string {
-    let result = path.split('/').filter(value => {
-        return value !== ""
-    }).join('/')
-    if(result.length > 0) {
-        return '/' + result
-    } else {
-        return ''
+interface ConvertDirOptions {
+    // 基础路径
+    baseUrl?: string
+    // 输入的文件路径
+    inputDir: string
+    // 输出的文件目录
+    outDir: string
+    // any类型处理
+    anyType?: string
+}
+
+/**
+ * @param filePath .d.ts文件所在位置
+ * @param options 配置transfer的行为
+ */
+function convertDir(options: ConvertDirOptions) {
+    if (!options.inputDir) {
+        console.error('参数必须传入inputDir')
+        return false
     }
+    if (!options.outDir) {
+        console.error('参数必须传入outDir')
+        return false
+    }
+
+    let baseUrl = options.baseUrl || defaultOptions.baseUrl
+
+    let anyType = options.anyType || defaultOptions.anyType
+
+    let inputPath = path.join(baseUrl, options.inputDir)
+
+    let outputPath = path.join(baseUrl, options.outDir)
+
+    // 创建输出的文件夹
+    createDir(outputPath)
+
+    writeFile(outputPath, convert(inputPath, anyType))
 }
 
 function writeFile(outputPath: string, data: string) {
@@ -82,3 +89,10 @@ function createDir(outDir: string) {
         fs.mkdirSync(outDir);
     }
 }
+
+export {
+    convertFile,
+    convertDir
+}
+
+export default convertFile;
