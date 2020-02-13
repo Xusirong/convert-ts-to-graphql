@@ -1,9 +1,11 @@
 {
   "name": "convert-ts-to-graphql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convert ts .d.ts file to graphql schema",
   "main": "dist/lib/index.js",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "tsc",
