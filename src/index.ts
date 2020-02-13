@@ -70,8 +70,43 @@ function convertDir(options: ConvertDirOptions) {
 
     // 创建输出的文件夹
     createDir(outputPath)
+    
+    transferFiles(inputPath, outputPath, anyType)
+}
 
-    writeFile(outputPath, convert(inputPath, anyType))
+function createDir(outDir: string) {
+    if (!fs.existsSync(outDir)) {
+        fs.mkdirSync(outDir);
+    }
+}
+
+function transferFiles(inputPath: string, outputPath: string, anyType: string) {
+    fs.readdir(inputPath, function(error, files) {
+        if(error) {
+            console.error(error)
+        } else {
+            files.forEach((filename) => {
+                let input = path.join(inputPath, filename)
+                let output = path.join(outputPath, filename)
+                fs.stat(input, function(err, stats) {
+                    if(err) {
+                        console.error(err)
+                    } else {
+                        let isFile = stats.isFile() //是文件
+                        if(isFile) {
+                            writeFile(output, convert(input, anyType))
+                        }
+
+                        let isDir = stats.isDirectory() //是文件夹
+                        if(isDir){
+                            createDir(output)
+                            transferFiles(input, output, anyType) //递归
+                        }
+                    }
+                })
+            })
+        }
+    })
 }
 
 function writeFile(outputPath: string, data: string) {
@@ -84,15 +119,7 @@ function writeFile(outputPath: string, data: string) {
     })
 }
 
-function createDir(outDir: string) {
-    if (!fs.existsSync(outDir)) {
-        fs.mkdirSync(outDir);
-    }
-}
-
 export {
     convertFile,
     convertDir
 }
-
-export default convertFile;
