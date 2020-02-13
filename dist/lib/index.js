@@ -33,22 +33,22 @@ function convertDir(options) {
         console.error('参数必须传入inputDir');
         return false;
     }
-    if (!options.outDir) {
-        console.error('参数必须传入outDir');
+    if (!options.outputDir) {
+        console.error('参数必须传入outputDir');
         return false;
     }
     let baseUrl = options.baseUrl || defaultOptions.baseUrl;
     let anyType = options.anyType || defaultOptions.anyType;
     let inputPath = path_1.default.join(baseUrl, options.inputDir);
-    let outputPath = path_1.default.join(baseUrl, options.outDir);
+    let outputPath = path_1.default.join(baseUrl, options.outputDir);
     // 创建输出的文件夹
     createDir(outputPath);
     transferFiles(inputPath, outputPath, anyType);
 }
 exports.convertDir = convertDir;
-function createDir(outDir) {
-    if (!fs_1.default.existsSync(outDir)) {
-        fs_1.default.mkdirSync(outDir);
+function createDir(outputDir) {
+    if (!fs_1.default.existsSync(outputDir)) {
+        fs_1.default.mkdirSync(outputDir);
     }
 }
 function transferFiles(inputPath, outputPath, anyType) {
@@ -65,11 +65,15 @@ function transferFiles(inputPath, outputPath, anyType) {
                         console.error(err);
                     }
                     else {
-                        let isFile = stats.isFile(); //是文件
+                        //是文件
+                        let isFile = stats.isFile();
                         if (isFile) {
-                            writeFile(output, convert_1.default(input, anyType));
+                            // 后缀处理
+                            let outputGql = output.split('.')[0] + '.graphql';
+                            writeFile(outputGql, convert_1.default(input, anyType));
                         }
-                        let isDir = stats.isDirectory(); //是文件夹
+                        //是文件夹
+                        let isDir = stats.isDirectory();
                         if (isDir) {
                             createDir(output);
                             transferFiles(input, output, anyType); //递归
@@ -86,7 +90,6 @@ function writeFile(outputPath, data) {
             console.log(error);
             return false;
         }
-        console.log('转化成功');
     });
 }
 //# sourceMappingURL=index.js.map

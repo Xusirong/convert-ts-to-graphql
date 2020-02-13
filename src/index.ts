@@ -41,7 +41,7 @@ interface ConvertDirOptions {
     // 输入的文件路径
     inputDir: string
     // 输出的文件目录
-    outDir: string
+    outputDir: string
     // any类型处理
     anyType?: string
 }
@@ -55,8 +55,8 @@ function convertDir(options: ConvertDirOptions) {
         console.error('参数必须传入inputDir')
         return false
     }
-    if (!options.outDir) {
-        console.error('参数必须传入outDir')
+    if (!options.outputDir) {
+        console.error('参数必须传入outputDir')
         return false
     }
 
@@ -66,7 +66,7 @@ function convertDir(options: ConvertDirOptions) {
 
     let inputPath = path.join(baseUrl, options.inputDir)
 
-    let outputPath = path.join(baseUrl, options.outDir)
+    let outputPath = path.join(baseUrl, options.outputDir)
 
     // 创建输出的文件夹
     createDir(outputPath)
@@ -74,9 +74,9 @@ function convertDir(options: ConvertDirOptions) {
     transferFiles(inputPath, outputPath, anyType)
 }
 
-function createDir(outDir: string) {
-    if (!fs.existsSync(outDir)) {
-        fs.mkdirSync(outDir);
+function createDir(outputDir: string) {
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
     }
 }
 
@@ -92,12 +92,17 @@ function transferFiles(inputPath: string, outputPath: string, anyType: string) {
                     if(err) {
                         console.error(err)
                     } else {
-                        let isFile = stats.isFile() //是文件
+                        //是文件
+                        let isFile = stats.isFile()
                         if(isFile) {
-                            writeFile(output, convert(input, anyType))
+                            // 后缀处理
+                            let outputGql = output.split('.')[0] + '.graphql'
+
+                            writeFile(outputGql, convert(input, anyType))
                         }
 
-                        let isDir = stats.isDirectory() //是文件夹
+                        //是文件夹
+                        let isDir = stats.isDirectory()
                         if(isDir){
                             createDir(output)
                             transferFiles(input, output, anyType) //递归
@@ -115,7 +120,6 @@ function writeFile(outputPath: string, data: string) {
             console.log(error);
             return false;
         }
-        console.log('转化成功');
     })
 }
 

@@ -7,7 +7,7 @@ declare function convertFile(options: ConvertFileOptions): string | false;
 interface ConvertDirOptions {
     baseUrl?: string;
     inputDir: string;
-    outDir: string;
+    outputDir: string;
     anyType?: string;
 }
 /**
