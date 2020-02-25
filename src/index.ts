@@ -87,23 +87,24 @@ function transferFiles(inputPath: string, outputPath: string, anyType: string) {
         } else {
             files.forEach((filename) => {
                 let input = path.join(inputPath, filename)
-                let output = path.join(outputPath, filename)
                 fs.stat(input, function(err, stats) {
                     if(err) {
                         console.error(err)
                     } else {
                         //是文件
                         let isFile = stats.isFile()
-                        if(isFile) {
+                        let isTypeFile = filename.includes('.d.ts')
+                        if(isFile && isTypeFile) {
                             // 后缀处理
-                            let outputGql = output.split('.')[0] + '.graphql'
-
-                            writeFile(outputGql, convert(input, anyType))
+                            let outputFile = filename.split('.d.ts')[0] + '.graphql'
+                            let output = path.join(outputPath, outputFile)
+                            writeFile(output, convert(input, anyType))
                         }
 
                         //是文件夹
                         let isDir = stats.isDirectory()
                         if(isDir){
+                            let output = path.join(outputPath, filename)
                             createDir(output)
                             transferFiles(input, output, anyType) //递归
                         }
