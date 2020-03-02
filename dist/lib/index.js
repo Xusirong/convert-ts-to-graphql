@@ -6,10 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
 const convert_1 = __importDefault(require("./convert"));
+const util_1 = require("util");
 const defaultOptions = {
     baseUrl: __dirname,
     anyType: "Any"
 };
+function convertCode(code, anyType = defaultOptions.anyType) {
+    if (!util_1.isString(code)) {
+        console.error('code参数必须是字符串类型');
+        return false;
+    }
+    return convert_1.default(code, anyType);
+}
+exports.convertCode = convertCode;
 function convertFile(options) {
     if (!options.inputFile) {
         console.error('参数必须传入inputFile');
@@ -21,7 +30,8 @@ function convertFile(options) {
     if (!fs_1.default.existsSync(filePath)) {
         throw new Error(`${filePath}文件不存在`);
     }
-    return convert_1.default(filePath, anyType);
+    let code = getCodeFromFile(filePath);
+    return convert_1.default(code, anyType);
 }
 exports.convertFile = convertFile;
 /**
@@ -46,6 +56,11 @@ function convertDir(options) {
     transferFiles(inputPath, outputPath, anyType);
 }
 exports.convertDir = convertDir;
+function getCodeFromFile(filePath) {
+    const codeBuffer = fs_1.default.readFileSync(filePath);
+    const code = codeBuffer.toString();
+    return code;
+}
 function createDir(outputDir) {
     if (!fs_1.default.existsSync(outputDir)) {
         fs_1.default.mkdirSync(outputDir);
@@ -71,7 +86,8 @@ function transferFiles(inputPath, outputPath, anyType) {
                             // 后缀处理
                             let outputFile = filename.split('.d.ts')[0] + '.graphql';
                             let output = path_1.default.join(outputPath, outputFile);
-                            writeFile(output, convert_1.default(input, anyType));
+                            let code = getCodeFromFile(input);
+                            writeFile(output, convert_1.default(code, anyType));
                         }
                         //是文件夹
                         let isDir = stats.isDirectory();

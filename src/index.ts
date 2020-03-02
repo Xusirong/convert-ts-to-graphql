@@ -9,7 +9,7 @@ const defaultOptions = {
 }
 
 function convertCode(code: string, anyType: string = defaultOptions.anyType) {
-    if (isString(code)) {
+    if (!isString(code)) {
         console.error('code参数必须是字符串类型')
         return false
     }

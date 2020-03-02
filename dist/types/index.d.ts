@@ -1,3 +1,4 @@
+declare function convertCode(code: string, anyType?: string): string | false;
 interface ConvertFileOptions {
     baseUrl?: string;
     inputFile: string;
@@ -15,4 +16,4 @@ interface ConvertDirOptions {
  * @param options 配置transfer的行为
  */
 declare function convertDir(options: ConvertDirOptions): false | undefined;
-export { convertFile, convertDir };
+export { convertCode, convertFile, convertDir };

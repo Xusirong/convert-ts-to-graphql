@@ -4,13 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importDefault(require("typescript"));
-const fs_1 = __importDefault(require("fs"));
 const interfaceFC_1 = __importDefault(require("./lib/interfaceFC"));
 const typeFC_1 = __importDefault(require("./lib/typeFC"));
 const util_1 = require("util");
-function default_1(filePath, anyType) {
-    const codeBuffer = fs_1.default.readFileSync(filePath);
-    const code = codeBuffer.toString();
+function default_1(code, anyType) {
     const sourceFile = typescript_1.default.createSourceFile("ts", code, typescript_1.default.ScriptTarget.ES2015, true);
     const { statements } = sourceFile;
     let FCList = {};
