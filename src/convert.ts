@@ -19,9 +19,10 @@ export default function (filePath: string, anyType: string) {
         }
     })
 
+    let FCNameList: string[] = Object.keys(FCList)
     let graphqlDSL: string = ""
-    Object.keys(FCList).forEach(name => {
-        const result = buildDSLFromTypeFC(name, FCList[name], anyType)
+    FCNameList.forEach(name => {
+        const result = buildDSLFromTypeFC(name, FCList[name], FCNameList, anyType)
         if (result) { graphqlDSL += result }
     })
 
@@ -49,26 +50,25 @@ const typeMapping: Record<string, string> = {
     "bigint": "Int"
 }
 
-function replacer(value: string | object, anyType: string) {
-    if (isString(value)) {
-        if (typeMapping[value]) {
-            return typeMapping[value]
-        } else {
-            return anyType
-        }
-    } else {
+function replacer(value: string, FCNameList: string[], anyType: string) {
+    if (typeMapping[value]) {
+        return typeMapping[value]
+    } else if (FCNameList.includes(value)) {
         return value
+    } else {
+        return anyType
     }
 }
 
 function buildDSLFromTypeFC(
     name: string,
     fcItem: Function,
+    FCNameList: string[],
     anyType: string
 ): string {
     let body = JSON.stringify(
         fcItem(),
-        (key: string, value: string) => replacer(value, anyType),
+        (key: string, value: string) => replacer(value, FCNameList, anyType),
         2).replace(/"/g, "")
 
     return `type ${name} ${body} \n\n`

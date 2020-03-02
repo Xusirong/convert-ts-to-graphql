@@ -99,11 +99,16 @@ export default function (statement: ts.InterfaceDeclaration): FCItem {
                     result[key] = args[index]
                 } else if ((this as any)[members[key]]) {
                     // 属性值为类型
-                    if (membersAgrs[key]) {
-                        result[key] = (this as any)[members[key]](...membersAgrs[key])
-                    } else {
-                        result[key] = (this as any)[members[key]]()
-                    }
+
+                    // 将类型拓展开的实现方式
+                    // if (membersAgrs[key]) {
+                    //     result[key] = (this as any)[members[key]](...membersAgrs[key])
+                    // } else {
+                    //     result[key] = (this as any)[members[key]]()
+                    // }
+
+                    // 将类型直接输出
+                    result[key] = members[key]
                 } else {
                     result[key] = members[key]
                 }
