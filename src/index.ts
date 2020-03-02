@@ -1,10 +1,20 @@
 import fs from 'fs'
 import path from 'path'
 import convert from './convert'
+import { isString } from 'util'
 
 const defaultOptions = {
     baseUrl: __dirname,
     anyType: "Any"
+}
+
+function convertCode(code: string, anyType: string = defaultOptions.anyType) {
+    if (isString(code)) {
+        console.error('code参数必须是字符串类型')
+        return false
+    }
+
+    return convert(code, anyType)
 }
 
 interface ConvertFileOptions {
@@ -32,7 +42,9 @@ function convertFile(options: ConvertFileOptions) {
         throw new Error(`${filePath}文件不存在`)
     }
 
-    return convert(filePath, anyType)
+    let code = getCodeFromFile(filePath)
+
+    return convert(code, anyType)
 }
 
 interface ConvertDirOptions {
@@ -74,6 +86,12 @@ function convertDir(options: ConvertDirOptions) {
     transferFiles(inputPath, outputPath, anyType)
 }
 
+function getCodeFromFile(filePath: string) {
+    const codeBuffer = fs.readFileSync(filePath)
+    const code = codeBuffer.toString()
+    return code
+}
+
 function createDir(outputDir: string) {
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir);
@@ -98,7 +116,9 @@ function transferFiles(inputPath: string, outputPath: string, anyType: string) {
                             // 后缀处理
                             let outputFile = filename.split('.d.ts')[0] + '.graphql'
                             let output = path.join(outputPath, outputFile)
-                            writeFile(output, convert(input, anyType))
+
+                            let code = getCodeFromFile(input)
+                            writeFile(output, convert(code, anyType))
                         }
 
                         //是文件夹
@@ -125,6 +145,7 @@ function writeFile(outputPath: string, data: string) {
 }
 
 export {
+    convertCode,
     convertFile,
     convertDir
 }

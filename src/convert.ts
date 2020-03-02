@@ -1,13 +1,9 @@
 import ts from 'typescript'
-import fs from 'fs'
 import interfaceFC from './lib/interfaceFC'
 import typeFC from './lib/typeFC'
 import { isString } from 'util'
 
-export default function (filePath: string, anyType: string) {
-    const codeBuffer = fs.readFileSync(filePath)
-    const code = codeBuffer.toString()
-
+export default function (code: string, anyType: string) {
     const sourceFile: ts.SourceFile = ts.createSourceFile("ts", code, ts.ScriptTarget.ES2015, true)
     const { statements } = sourceFile
 
