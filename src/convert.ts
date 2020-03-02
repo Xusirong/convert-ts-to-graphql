@@ -50,13 +50,17 @@ const typeMapping: Record<string, string> = {
     "bigint": "Int"
 }
 
-function replacer(value: string, FCNameList: string[], anyType: string) {
-    if (typeMapping[value]) {
-        return typeMapping[value]
-    } else if (FCNameList.includes(value)) {
-        return value
+function replacer(value: string | object, FCNameList: string[], anyType: string) {
+    if (isString(value)) {
+        if (typeMapping[value]) {
+            return typeMapping[value]
+        } else if(FCNameList.includes(value)) {
+            return value
+        } else {
+            return anyType
+        }
     } else {
-        return anyType
+        return value
     }
 }
 

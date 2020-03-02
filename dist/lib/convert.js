@@ -20,9 +20,10 @@ function default_1(filePath, anyType) {
             FCList[fcItem.name] = fcItem.function.bind(FCList);
         }
     });
+    let FCNameList = Object.keys(FCList);
     let graphqlDSL = "";
-    Object.keys(FCList).forEach(name => {
-        const result = buildDSLFromTypeFC(name, FCList[name], anyType);
+    FCNameList.forEach(name => {
+        const result = buildDSLFromTypeFC(name, FCList[name], FCNameList, anyType);
         if (result) {
             graphqlDSL += result;
         }
@@ -45,10 +46,13 @@ const typeMapping = {
     "boolean": "Boolean",
     "bigint": "Int"
 };
-function replacer(value, anyType) {
+function replacer(value, FCNameList, anyType) {
     if (util_1.isString(value)) {
         if (typeMapping[value]) {
             return typeMapping[value];
+        }
+        else if (FCNameList.includes(value)) {
+            return value;
         }
         else {
             return anyType;
@@ -58,8 +62,8 @@ function replacer(value, anyType) {
         return value;
     }
 }
-function buildDSLFromTypeFC(name, fcItem, anyType) {
-    let body = JSON.stringify(fcItem(), (key, value) => replacer(value, anyType), 2).replace(/"/g, "");
+function buildDSLFromTypeFC(name, fcItem, FCNameList, anyType) {
+    let body = JSON.stringify(fcItem(), (key, value) => replacer(value, FCNameList, anyType), 2).replace(/"/g, "");
     return `type ${name} ${body} \n\n`;
 }
 //# sourceMappingURL=convert.js.map

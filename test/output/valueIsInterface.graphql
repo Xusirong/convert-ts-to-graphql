@@ -1,11 +1,6 @@
 type H {
-  i: {
-    name: String,
-    age: Float
-  },
-  j: {
-    i: Json
-  }
+  i: I,
+  j: J
 } 
 
 type I {

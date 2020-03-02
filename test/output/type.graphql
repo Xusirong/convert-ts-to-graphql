@@ -7,11 +7,7 @@ type L {
 } 
 
 type M {
-  k: {
-    name: String
-  },
-  l: {
-    t: String
-  }
+  k: K,
+  l: L
 } 
 
