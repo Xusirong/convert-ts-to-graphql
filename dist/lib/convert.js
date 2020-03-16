@@ -4,22 +4,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const typescript_1 = __importDefault(require("typescript"));
-const interfaceFC_1 = __importDefault(require("./lib/interfaceFC"));
-const typeFC_1 = __importDefault(require("./lib/typeFC"));
+const interfaceFC_1 = __importDefault(require("./lib/createFC/interfaceFC"));
+const typeFC_1 = __importDefault(require("./lib/createFC/typeFC"));
+const importFC_1 = __importDefault(require("./lib/createFC/importFC"));
 const util_1 = require("util");
 function default_1(code, anyType) {
     const sourceFile = typescript_1.default.createSourceFile("ts", code, typescript_1.default.ScriptTarget.ES2015, true);
     const { statements } = sourceFile;
     let FCList = {};
+    let importList = [];
     statements.forEach(statement => {
         const fcItem = createFCFromStatement(statement);
-        if (fcItem) {
+        if (util_1.isArray(fcItem)) {
+            fcItem.forEach(item => {
+                FCList[item.name] = item.function.bind(FCList);
+                importList.push(item.name);
+            });
+        }
+        else if (fcItem) {
             FCList[fcItem.name] = fcItem.function.bind(FCList);
         }
     });
     let FCNameList = Object.keys(FCList);
     let graphqlDSL = "";
     FCNameList.forEach(name => {
+        // import引入的类型不解析成type
+        if (importList.includes(name)) {
+            return;
+        }
         const result = buildDSLFromTypeFC(name, FCList[name], FCNameList, anyType);
         if (result) {
             graphqlDSL += result;
@@ -34,6 +46,9 @@ function createFCFromStatement(statement) {
     }
     if (typescript_1.default.isTypeAliasDeclaration(statement)) {
         return typeFC_1.default(statement);
+    }
+    if (typescript_1.default.isImportDeclaration(statement)) {
+        return importFC_1.default(statement);
     }
     return undefined;
 }

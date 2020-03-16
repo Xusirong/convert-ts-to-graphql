@@ -1,8 +1,8 @@
 import ts from 'typescript'
-import { FCItem } from '../convert'
-import { handleIdentifier } from './getName'
-import handlePropertySignature from './handlePropertySignature'
-import getKeyworkType from './getKeyworkType'
+import { FCItem } from '../../convert'
+import { handleIdentifier } from '../getName'
+import handlePropertySignature from '../handlePropertySignature'
+import getKeyworkType from '../getKeyworkType'
 
 export default function (statement: ts.InterfaceDeclaration): FCItem {
     let name = handleIdentifier(statement.name)
